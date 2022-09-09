@@ -25,11 +25,8 @@ public class imageProcessing {
     }
 
     void threshold(int[][] ary1, int[][] ary2) {
-        int col = this.numCols - 1;
-        int row = this.numRows - 1;
-
-        for (int i = 1; i <= row; i++) {
-            for (int j = 1; j <= col; j++) {
+        for (int i = 1; i <= this.numRows; i++) {
+            for (int j = 1; j <= this.numCols; j++) {
                 if (ary1[i][j] >= this.thrVal) {
                     ary2[i][j] = 1;
                 } else {
@@ -42,16 +39,36 @@ public class imageProcessing {
     void imgReformat(int[][] inAry, int minVal, int maxVal, int[] outImg) {
         String str = Integer.toString(newMax);
         int width = str.length();
-        //
+        
 
     }
 
-    void mirrorFraming() {
+    int[][] mirrorFraming(int[][] arr) {
         // The algo of Mirror framing
+        //fill all 4 sides in 1 loop
+        int row = this.numRows+1;
+        int col = this.numCols+1;
+        for(int i=1; i<=row; i++){
+            arr[i][0] = arr[i][1];
+            arr[i][col] = arr[i][col-1];
+        }
+
+        for(int i=1; i<=col; i++){
+            arr[0][i] = arr[1][i];
+            arr[row][i] = arr[row-1][i];
+        }
+
+        return arr;
     }
 
-    void loadImage() {
+    void loadImage(int x, int row, int col, boolean done) {
         // Read from input file and load onto mirrorFramedAry begin at [1][1]
+        if(!done){
+            this.mirrorFramedAry[row][col]=x;
+        }
+        else{
+            this.mirrorFramedAry = mirrorFraming(this.mirrorFramedAry);
+        }
     }
 
     void loadMask() {
@@ -81,6 +98,24 @@ public class imageProcessing {
         // process the mirrorFramedAry begin at [1][1];
         // keep track of newMin and newMax
         // algo in specs
+        this.newMin = 9999;
+        this.newMax = 0;
+        for(int i=1; i<this.numRows; i++){
+            for(int j=1; j<this.numCols; j++){
+                //loadNeighbor1Dary(i,j,neighbor1DAry)
+                //sort(neighborAry)
+                //medianAry[i,j] <- neighborAry[4]
+                /*
+                 * if newMin>medianAry[i,j]{
+                 *      newMin = medianAry[i,j]
+                 * }
+                 * if newMax<medianAry[i,j]{
+                 *      newMax = medianAry[i,j]
+                 * }
+                 * 
+                 */
+            }
+        }
     }
 
     void computeGauss() {
@@ -91,6 +126,10 @@ public class imageProcessing {
 
     int convolution(int[] neighbor1DAry, int[] mask1DAry) {
         // algo in specs
-        return 0;
+        int result = 0;
+        for(int i=0; i<9; i++){
+            result+=neighbor1DAry[i]*mask1DAry[i];
+        }
+        return result;
     }
 }
