@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class imageProcessing {
     int numRows, numCols, minVal, maxVal, maskRows, maskCols, maskMin, maskMax, newMin, newMax;
     int thrVal;
@@ -61,31 +63,44 @@ public class imageProcessing {
         return arr;
     }
 
-    void loadImage(int x, int row, int col, boolean done) {
+    void loadImage(int x, int row, int col) {
         // Read from input file and load onto mirrorFramedAry begin at [1][1]
-        if(!done){
-            this.mirrorFramedAry[row][col]=x;
+        if(row!=this.numRows || col!=this.numCols){
+            this.mirrorFramedAry[row+1][col+1]=x;
         }
         else{
-            this.mirrorFramedAry = mirrorFraming(this.mirrorFramedAry);
+            this.mirrorFramedAry = this.mirrorFraming(this.mirrorFramedAry);
         }
     }
 
-    void loadMask() {
+    void loadMask(int[][] x) {
         // load maskFile onto mask2DAry
+        this.mask2Dary = x;
     }
 
-    void loadMask1DAry() {
+    void loadMask1DAry(int[] x) {
         // Load 9 px of mask into mask1DAry using 2 loops
+        this.mask1DAry = x;
     }
 
-    void loadNiehgbor1DAry() {
-        // Load the 3x3 neighbors of mirrorFramedAry(i,j) into neighbor1DAry using 2
-        // loops
+    void loadNiehgbor1DAry(int r, int c) {
+        // Load the 3x3 neighbors of mirrorFramedAry(i,j) into neighbor1DAry using 2 loops
+        int x=0;
+        //fill row 1 and 3
+        for(int i=r-1; i<r+2; i++){
+            this.neighbor1DAry[x++] = this.mirrorFramedAry[i][c-1];
+            this.neighbor1DAry[x++] = this.mirrorFramedAry[i][c+1];
+        }
+        for(int i=r-1; i<r+2; i+=2){
+            this.neighbor1DAry[x++] = this.mirrorFramedAry[i][c];
+        }
+        this.neighbor1DAry[x]=this.mirrorFramedAry[r][c];
     }
 
-    void sort() {
-        // sort neighborAry
+    int[] sort(int[] n) {
+        // sort
+        Arrays.sort(n);
+        return n;
     }
 
     void computeAvg() {
@@ -102,18 +117,15 @@ public class imageProcessing {
         this.newMax = 0;
         for(int i=1; i<this.numRows; i++){
             for(int j=1; j<this.numCols; j++){
-                //loadNeighbor1Dary(i,j,neighbor1DAry)
-                //sort(neighborAry)
-                //medianAry[i,j] <- neighborAry[4]
-                /*
-                 * if newMin>medianAry[i,j]{
-                 *      newMin = medianAry[i,j]
-                 * }
-                 * if newMax<medianAry[i,j]{
-                 *      newMax = medianAry[i,j]
-                 * }
-                 * 
-                 */
+                this.loadNiehgbor1DAry(i,j);
+                this.neighbor1DAry = this.sort(this.neighbor1DAry);
+                this.medianAry[i][j] = this.neighbor1DAry[4];
+                if(this.newMin > this.medianAry[i][j]){
+                    this.newMin = this.medianAry[i][j];
+                }
+                if(this.newMax<this.medianAry[i][j]){
+                    this.newMax = this.medianAry[i][j];
+                }
             }
         }
     }
@@ -122,6 +134,20 @@ public class imageProcessing {
         // process the mirrorFramedAry begin at [1][1];
         // keep track of newMin and newMax
         // algo in specs
+        this.newMin = 9999;
+        this.newMax = 0;
+        for(int i=1; i<this.numRows; i++){
+            for(int j=1; j<this.numCols; j++){
+                this.loadNiehgbor1DAry(i, j);
+                this.GaussAry[i][j] = this.convolution(this.neighbor1DAry, this.mask1DAry);
+                if(this.newMin > this.GaussAry[i][j]){
+                    this.newMin = this.GaussAry[i][j];
+                }
+                if(this.newMax < this.GaussAry[i][j]){
+                    this.newMax = this.GaussAry[i][j];
+                }
+            }
+        }
     }
 
     int convolution(int[] neighbor1DAry, int[] mask1DAry) {
