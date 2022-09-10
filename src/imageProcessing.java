@@ -12,7 +12,7 @@ public class imageProcessing {
     int neighbor1DAry[];
     int mask1DAry[];
 
-    imageProcessing(int thrVal, int numRows, int numCols) {
+    imageProcessing(int thrVal, int numRows, int numCols, int maskRows, int maskCols) {
         this.thrVal = thrVal;
         this.numRows = numRows;
         this.numCols = numCols;
@@ -21,7 +21,7 @@ public class imageProcessing {
         this.medianAry = new int[numRows + 2][numCols + 2];
         this.GaussAry = new int[numRows + 2][numCols + 2];
         this.thrAry = new int[numRows + 2][numCols + 2];
-        this.mask2Dary = new int[numRows][numCols];
+        this.mask2Dary = new int[maskRows][maskCols];
         this.neighbor1DAry = new int[9];
         this.mask1DAry = new int[9];
     }
@@ -38,39 +38,43 @@ public class imageProcessing {
         }
     }
 
-    void imgReformat(int[][] inAry, int minVal, int maxVal, String outImg) {
-        /* 
-        outImg[0] = this.numRows;
-        outImg[1] = this.numCols;
-        outImg[2] = minVal;
-        outImg[3] = maxVal;
-        */
+    String imgReformat(int[][] inAry, int minVal, int maxVal, String outImg) {
+        outImg += this.numRows;
+        outImg += this.numCols;
+        outImg += this.newMin;
+        outImg += this.newMax;
+        outImg += "\n";
         String str = Integer.toString(newMax);
         int width = str.length();
         
         for(int r=1; r<this.numRows; r++){
             for(int c=1; c<this.numCols;c++){
-                //outImg[]
+                outImg += inAry[r][c];
+                String str2 = Integer.toString(inAry[r][c]);
+                int WW = str2.length();
+                while(WW < width){
+                    outImg += " ";
+                }
             }
+            outImg += "\n";
         }
+        return outImg;
     }
 
-    int[][] mirrorFraming(int[][] arr) {
+    void mirrorFraming() {
         // The algo of Mirror framing
         //fill all 4 sides in 1 loop
         int row = this.numRows+1;
         int col = this.numCols+1;
         for(int i=1; i<=row; i++){
-            arr[i][0] = arr[i][1];
-            arr[i][col] = arr[i][col-1];
+            mirrorFramedAry[i][0] = mirrorFramedAry[i][1];
+            mirrorFramedAry[i][col] = mirrorFramedAry[i][col-1];
         }
 
         for(int i=1; i<=col; i++){
-            arr[0][i] = arr[1][i];
-            arr[row][i] = arr[row-1][i];
+            mirrorFramedAry[0][i] = mirrorFramedAry[1][i];
+            mirrorFramedAry[row][i] = mirrorFramedAry[row-1][i];
         }
-
-        return arr;
     }
 
     void loadImage(int x, int row, int col) {
@@ -79,18 +83,18 @@ public class imageProcessing {
             this.mirrorFramedAry[row+1][col+1]=x;
         }
         else{
-            this.mirrorFramedAry = this.mirrorFraming(this.mirrorFramedAry);
+            this.mirrorFraming();
         }
     }
 
-    void loadMask(int[][] x) {
+    void loadMask(int x, int r, int c) {
         // load maskFile onto mask2DAry
-        this.mask2Dary = x;
+        this.mask2Dary[r][c] = x;
     }
 
-    void loadMask1DAry(int[] x) {
+    void loadMask1DAry(int x, int i) {
         // Load 9 px of mask into mask1DAry using 2 loops
-        this.mask1DAry = x;
+        this.mask1DAry[i] = x;
     }
 
     void loadNiehgbor1DAry(int r, int c) {
@@ -122,12 +126,12 @@ public class imageProcessing {
             for(int j=1; j<this.numCols; j++){
                 this.loadNiehgbor1DAry(i,j);
                 this.neighbor1DAry = this.sort(this.neighbor1DAry);
-                this.medianAry[i][j] = this.neighbor1DAry[4];
-                if(this.newMin > this.medianAry[i][j]){
-                    this.newMin = this.medianAry[i][j];
+                this.avgAry[i][j] = this.neighbor1DAry[4];
+                if(this.newMin > this.avgAry[i][j]){
+                    this.newMin = this.avgAry[i][j];
                 }
-                if(this.newMax<this.medianAry[i][j]){
-                    this.newMax = this.medianAry[i][j];
+                if(this.newMax<this.avgAry[i][j]){
+                    this.newMax = this.avgAry[i][j];
                 }
             }
         }
