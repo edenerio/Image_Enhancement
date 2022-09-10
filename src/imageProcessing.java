@@ -38,11 +38,21 @@ public class imageProcessing {
         }
     }
 
-    void imgReformat(int[][] inAry, int minVal, int maxVal, int[] outImg) {
+    void imgReformat(int[][] inAry, int minVal, int maxVal, String outImg) {
+        /* 
+        outImg[0] = this.numRows;
+        outImg[1] = this.numCols;
+        outImg[2] = minVal;
+        outImg[3] = maxVal;
+        */
         String str = Integer.toString(newMax);
         int width = str.length();
         
-
+        for(int r=1; r<this.numRows; r++){
+            for(int c=1; c<this.numCols;c++){
+                //outImg[]
+            }
+        }
     }
 
     int[][] mirrorFraming(int[][] arr) {
@@ -86,7 +96,6 @@ public class imageProcessing {
     void loadNiehgbor1DAry(int r, int c) {
         // Load the 3x3 neighbors of mirrorFramedAry(i,j) into neighbor1DAry using 2 loops
         int x=0;
-        //fill row 1 and 3
         for(int i=r-1; i<r+2; i++){
             this.neighbor1DAry[x++] = this.mirrorFramedAry[i][c-1];
             this.neighbor1DAry[x++] = this.mirrorFramedAry[i][c+1];
@@ -107,6 +116,21 @@ public class imageProcessing {
         // process the mirrorFramedAry begin at [1][1];
         // keep track of newMin and newMax
         // algo in specs
+        this.newMin = 9999;
+        this.newMax = 0;
+        for(int i=1; i<this.numRows; i++){
+            for(int j=1; j<this.numCols; j++){
+                this.loadNiehgbor1DAry(i,j);
+                this.neighbor1DAry = this.sort(this.neighbor1DAry);
+                this.medianAry[i][j] = this.neighbor1DAry[4];
+                if(this.newMin > this.medianAry[i][j]){
+                    this.newMin = this.medianAry[i][j];
+                }
+                if(this.newMax<this.medianAry[i][j]){
+                    this.newMax = this.medianAry[i][j];
+                }
+            }
+        }
     }
 
     void computeMedian() {
