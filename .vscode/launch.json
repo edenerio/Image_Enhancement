@@ -16,7 +16,7 @@
             "request": "launch",
             "mainClass": "App",
             "projectName": "CSCI381_Project2_8d557f18",
-            "args": "AvgMedianGausFilterss_data.txt AvgMedianGausFilters_mask.txt 6 inputImg.txt AvgOut.txt AvgThreshold.txt MedianOut.txt MedianThreshold.txt GaussOut.txt GaussThreshold.txt"
+            "args": "AvgMedianGausFilterss_data.txt AvgMedianGausFilters_mask.txt 38 inputImg.txt AvgOut.txt AvgThreshold.txt MedianOut.txt MedianThreshold.txt GaussOut.txt GaussThreshold.txt"
         }
     ]
 }

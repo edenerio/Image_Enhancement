@@ -40,8 +40,11 @@ public class imageProcessing {
 
     String imgReformat(int[][] inAry, int minVal, int maxVal, String outImg) {
         outImg += this.numRows;
+        outImg += " ";
         outImg += this.numCols;
+        outImg += " ";
         outImg += this.newMin;
+        outImg += " ";
         outImg += this.newMax;
         outImg += "\n";
         String str = Integer.toString(newMax);

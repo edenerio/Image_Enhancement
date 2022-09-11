@@ -11,8 +11,6 @@ public class App {
             return;
         }
 
-        System.out.println("Application is running...");
-
         Scanner inFile = new Scanner(new File(args[0]));
         Scanner maskFile = new Scanner(new File(args[1]));
         int threshold = Integer.parseInt(args[2]);
@@ -23,8 +21,6 @@ public class App {
         BufferedWriter MedianThreshold = new BufferedWriter(new FileWriter(args[7]));
         BufferedWriter GaussOut = new BufferedWriter(new FileWriter(args[8]));
         BufferedWriter GaussThreshold = new BufferedWriter(new FileWriter(args[9]));
-
-        System.out.println("Scanners and Buffers successfully loaded...");
 
         int numRows, numCols, minVal, maxVal, maskRows, maskCols, maskMin, maskMax;
         numRows = inFile.nextInt();
@@ -39,10 +35,6 @@ public class App {
 
         //creating this class also allocates all the arrays
         imageProcessing imgProc = new imageProcessing(threshold, numRows, numCols, maskRows, maskCols);
-
-        System.out.println("imageProcessing Class created...");
-
-        System.out.println("Reading through data txt file now...");
         
         //read through inFile
         int currRow = 0;
@@ -58,8 +50,6 @@ public class App {
             }
         }
         
-        System.out.println("Reading through mask txt file now...");
-
         currRow = 0;
         currCol = 0;
         int index = 0;
@@ -75,17 +65,11 @@ public class App {
             }
         }
 
-        System.out.println("Executing Step 6...");
-
         //Step 6
         String inputImgStr = "";
         inputImgStr = imgProc.imgReformat(imgProc.mirrorFramedAry, minVal, maxVal, inputImgStr);
         //write inputImgStr to inputImg file
         inputImg.write(inputImgStr);
-        
-        System.out.println("Step 6 done...");
-
-        System.out.println("Executing Step 7...");
 
         //Step 7
         String imgOutStr = "";
@@ -98,10 +82,6 @@ public class App {
         AvgOut.write(imgOutStr);
         AvgThreshold.write(AvgThresholdStr);
 
-        System.out.println("Step 7 done...");
-
-        System.out.println("Executing Step 8...");
-
         //Step 8
         String MedianOutStr = "";
         imgProc.computeMedian();
@@ -112,10 +92,6 @@ public class App {
         //write MedianThresholdStr to MedianThreshold file
         MedianOut.write(MedianOutStr);
         MedianThreshold.write(MedianThresholdStr);
-
-        System.out.println("Step 8 done...");
-
-        System.out.println("Executing Step 9...");
 
         //Step 9
         imgProc.computeGauss();
@@ -128,10 +104,6 @@ public class App {
         GaussOut.write(GaussOutStr);
         GaussThreshold.write(GaussThresholdStr);
 
-        System.out.println("Step 9 done...");
-
-        System.out.println("Executing Step 10...");
-
         //Step 10
         inFile.close();
         maskFile.close();
@@ -142,8 +114,6 @@ public class App {
         MedianThreshold.close();
         GaussOut.close();
         GaussThreshold.close();
-
-        System.out.println("Step 10 done...");
 
     }
 }
