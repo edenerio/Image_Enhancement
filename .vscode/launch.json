@@ -14,7 +14,7 @@
             "type": "java",
             "name": "Launch App",
             "request": "launch",
-            "mainClass": "App",
+            "mainClass": "Enerio_Edison_main",
             "projectName": "CSCI381_Project2_8d557f18",
             "args": "AvgMedianGausFilterss_data.txt AvgMedianGausFilters_mask.txt 38 inputImg.txt AvgOut.txt AvgThreshold.txt MedianOut.txt MedianThreshold.txt GaussOut.txt GaussThreshold.txt"
         }

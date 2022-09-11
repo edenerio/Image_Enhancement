@@ -3,7 +3,7 @@ import java.util.Scanner;
 import java.util.zip.Inflater;
 import java.util.zip.ZipException;
 
-public class App {
+public class Enerio_Edison_main {
     public static void main(String[] args) throws IOException {
         // check if num of arguments is correct
         if (args.length != 10) {
@@ -34,31 +34,30 @@ public class App {
         maskMax = maskFile.nextInt();
 
         //creating this class also allocates all the arrays
-        imageProcessing imgProc = new imageProcessing(threshold, numRows, numCols, maskRows, maskCols);
+        imageProcessing imgProc = new imageProcessing(threshold, numRows, numCols, maskRows, maskCols, minVal, maxVal, maskMin, maskMax);
         
         //read through inFile
         int currRow = 0;
         int currCol = 0;
         while (inFile.hasNextInt()) {
             int z = inFile.nextInt();
-            //when this while loop is done, the class automatically calls mirrorFraming()
-            imgProc.loadImage(z, currRow, currCol);
-            currCol++;
+            imgProc.loadImage(z, currRow, currCol++);
             if(currCol == numCols){
                 currRow++;
                 currCol = 0;
             }
         }
         
+        imgProc.mirrorFraming();
+
         currRow = 0;
         currCol = 0;
         int index = 0;
         //read through maskFile
         while(maskFile.hasNextInt()){
             int zi = maskFile.nextInt();
-            imgProc.loadMask(zi, currRow, currCol);
+            imgProc.loadMask(zi, currRow, currCol++);
             imgProc.loadMask1DAry(zi, index++);
-            currCol++;
             if(currCol == maskCols){
                 currRow++;
                 currCol = 0;
@@ -66,43 +65,25 @@ public class App {
         }
 
         //Step 6
-        String inputImgStr = "";
-        inputImgStr = imgProc.imgReformat(imgProc.mirrorFramedAry, minVal, maxVal, inputImgStr);
-        //write inputImgStr to inputImg file
-        inputImg.write(inputImgStr);
+        imgProc.imgReformat(imgProc.getMirrorFramedAry(), imgProc.getMinVal(), imgProc.getMaxVal(), inputImg);
 
         //Step 7
-        String imgOutStr = "";
         imgProc.computeAvg();
-        imgOutStr = imgProc.imgReformat(imgProc.avgAry, imgProc.newMin, imgProc.newMax, imgOutStr);
-        imgProc.threshold(imgProc.avgAry, imgProc.thrAry);
-        String AvgThresholdStr = "";
-        AvgThresholdStr = imgProc.imgReformat(imgProc.thrAry, imgProc.newMin, imgProc.newMax, AvgThresholdStr);
-        //write imgOutStr to imgOut file
-        AvgOut.write(imgOutStr);
-        AvgThreshold.write(AvgThresholdStr);
+        imgProc.imgReformat(imgProc.getAvgAry(), imgProc.getNewMin(), imgProc.getNewMax(), AvgOut);
+        imgProc.threshold(imgProc.getAvgAry(), imgProc.getThrAry());
+        imgProc.imgReformat(imgProc.getThrAry(), imgProc.getNewMin(), imgProc.getNewMax(), AvgThreshold);
 
         //Step 8
-        String MedianOutStr = "";
         imgProc.computeMedian();
-        MedianOutStr = imgProc.imgReformat(imgProc.medianAry, imgProc.newMin, imgProc.newMax, MedianOutStr);
-        imgProc.threshold(imgProc.medianAry, imgProc.thrAry);
-        String MedianThresholdStr = "";
-        MedianThresholdStr = imgProc.imgReformat(imgProc.thrAry, imgProc.newMin, imgProc.newMax, MedianThresholdStr);
-        //write MedianThresholdStr to MedianThreshold file
-        MedianOut.write(MedianOutStr);
-        MedianThreshold.write(MedianThresholdStr);
+        imgProc.imgReformat(imgProc.getMedianAry(), imgProc.getNewMin(), imgProc.getNewMax(), MedianOut);
+        imgProc.threshold(imgProc.getMedianAry(), imgProc.getThrAry());
+        imgProc.imgReformat(imgProc.getThrAry(), imgProc.getNewMin(), imgProc.getNewMax(), MedianThreshold);
 
         //Step 9
         imgProc.computeGauss();
-        String GaussOutStr = "";
-        GaussOutStr = imgProc.imgReformat(imgProc.GaussAry, imgProc.newMin, imgProc.newMax, GaussOutStr);
-        imgProc.threshold(imgProc.GaussAry, imgProc.thrAry);
-        String GaussThresholdStr = "";
-        GaussThresholdStr = imgProc.imgReformat(imgProc.thrAry, imgProc.newMin, imgProc.newMax, GaussThresholdStr);
-        //write GaussOutStr to GaussOut file and GaussThresholdStr to GaussThreshold file
-        GaussOut.write(GaussOutStr);
-        GaussThreshold.write(GaussThresholdStr);
+        imgProc.imgReformat(imgProc.getGaussAry(), imgProc.getNewMin(), imgProc.getNewMax(), GaussOut);
+        imgProc.threshold(imgProc.getGaussAry(), imgProc.getThrAry());
+        imgProc.imgReformat(imgProc.getThrAry(), imgProc.getNewMin(), imgProc.getNewMax(), GaussThreshold);
 
         //Step 10
         inFile.close();
