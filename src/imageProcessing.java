@@ -52,8 +52,10 @@ public class imageProcessing {
                 outImg += inAry[r][c];
                 String str2 = Integer.toString(inAry[r][c]);
                 int WW = str2.length();
+                outImg += " ";
                 while(WW < width){
                     outImg += " ";
+                    WW++;
                 }
             }
             outImg += "\n";
