@@ -1,6 +1,5 @@
 import java.util.Arrays;
 import java.io.*;
-import java.util.Scanner;
 
 public class imageProcessing {
     private int numRows, numCols, minVal, maxVal, maskRows, maskCols, maskMin, maskMax, newMin, newMax;
@@ -35,7 +34,7 @@ public class imageProcessing {
         this.mask1DAry = new int[9];
     }
 
-    void threshold(int[][] ary1, int[][] ary2) {
+    public void threshold(int[][] ary1, int[][] ary2) {
         this.newMin = 0;
         this.newMax = 1;
         for (int i = 1; i < this.numRows+2; i++) {
@@ -49,7 +48,7 @@ public class imageProcessing {
         }
     }
 
-    void imgReformat (int[][] inAry, int minVal, int maxVal, BufferedWriter outImg) throws IOException {
+    public void imgReformat (int[][] inAry, int minVal, int maxVal, BufferedWriter outImg) throws IOException {
         outImg.write(Integer.toString(this.numRows));
         outImg.write(" ");
         outImg.write(Integer.toString(this.numCols));
@@ -78,7 +77,7 @@ public class imageProcessing {
         }
     }
 
-    void mirrorFraming() {
+    public void mirrorFraming() {
         // The algo of Mirror framing
         //fill all 4 sides in 1 loop
         int row = this.numRows+1;
@@ -94,22 +93,22 @@ public class imageProcessing {
         }
     }
 
-    void loadImage(int x, int row, int col) {
+    public void loadImage(int x, int row, int col) {
         // Read from input file and load onto mirrorFramedAry begin at [1][1]
         this.mirrorFramedAry[row+1][col+1]=x;
     }
 
-    void loadMask(int x, int r, int c) {
+    public void loadMask(int x, int r, int c) {
         // load maskFile onto mask2DAry
         this.mask2Dary[r][c] = x;
     }
 
-    void loadMask1DAry(int x, int i) {
+    public void loadMask1DAry(int x, int i) {
         // Load 9 px of mask into mask1DAry using 2 loops
         this.mask1DAry[i] = x;
     }
 
-    void loadNiehgbor1DAry(int r, int c) {
+    private void loadNiehgbor1DAry(int r, int c) {
         // Load the 3x3 neighbors of mirrorFramedAry(i,j) into neighbor1DAry using 2 loops
         int x=0;
         for(int i=r-1; i<r+2; i++){
@@ -122,13 +121,13 @@ public class imageProcessing {
         this.neighbor1DAry[x]=this.mirrorFramedAry[r][c];
     }
 
-    int[] sort(int[] n) {
+    private int[] sort(int[] n) {
         // sort
         Arrays.sort(n);
         return n;
     }
 
-    void computeAvg() {
+    public void computeAvg() {
         // process the mirrorFramedAry begin at [1][1];
         // keep track of newMin and newMax
         // algo in specs
@@ -149,7 +148,7 @@ public class imageProcessing {
         }
     }
 
-    void computeMedian() {
+    public void computeMedian() {
         // process the mirrorFramedAry begin at [1][1];
         // keep track of newMin and newMax
         // algo in specs
@@ -170,7 +169,7 @@ public class imageProcessing {
         }
     }
 
-    void computeGauss() {
+    public void computeGauss() {
         // process the mirrorFramedAry begin at [1][1];
         // keep track of newMin and newMax
         // algo in specs
@@ -190,7 +189,7 @@ public class imageProcessing {
         }
     }
 
-    int convolution(int[] neighbor1DAry, int[] mask1DAry) {
+    private int convolution(int[] neighbor1DAry, int[] mask1DAry) {
         // algo in specs
         int result = 0;
         for(int i=0; i<9; i++){
@@ -200,62 +199,62 @@ public class imageProcessing {
     }
 
     //get methods
-    int[][] getMirrorFramedAry(){
+    public int[][] getMirrorFramedAry(){
         return this.mirrorFramedAry;
     }
-    int[][] getAvgAry(){
+    public int[][] getAvgAry(){
         return this.avgAry;
     }
-    int[][] getMedianAry(){
+    public int[][] getMedianAry(){
         return this.medianAry;
     }
-    int[][] getGaussAry(){
+    public int[][] getGaussAry(){
         return this.GaussAry;
     }
-    int[][] getThrAry(){
+    public int[][] getThrAry(){
         return this.thrAry;
     }
-    int[][] getMask2DAry(){
+    public int[][] getMask2DAry(){
         return this.mask2Dary;
     }
-    int[] getNeighbor1DAry(){
+    public int[] getNeighbor1DAry(){
         return this.neighbor1DAry;
     }
-    int[] getMask1DAry(){
+    public int[] getMask1DAry(){
         return this.mask1DAry;
     }
 
-    int getNumRows(){
+    public int getNumRows(){
         return this.numRows;
     }
-    int getNumCols(){
+    public int getNumCols(){
         return this.numCols;
     }
-    int getMinVal(){
+    public int getMinVal(){
         return this.minVal;
     }
-    int getMaxVal(){
+    public int getMaxVal(){
         return this.maxVal;
     }
-    int getMaskRows(){
+    public int getMaskRows(){
         return this.maskRows;
     }
-    int getMaskCols(){
+    public int getMaskCols(){
         return this.maskCols;
     }
-    int getMaskMin(){
+    public int getMaskMin(){
         return this.maskMin;
     }
-    int getMaskMax(){
+    public int getMaskMax(){
         return this.maskMax;
     }
-    int getNewMin(){
+    public int getNewMin(){
         return this.newMin;
     }
-    int getNewMax(){
+    public int getNewMax(){
         return this.newMax;
     }
-    int getThrVal(){
+    public int getThrVal(){
         return this.thrVal;
     }
 }
