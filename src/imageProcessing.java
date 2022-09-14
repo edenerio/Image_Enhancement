@@ -137,7 +137,7 @@ public class imageProcessing {
             for(int j=1; j<=this.numCols; j++){
                 this.loadNiehgbor1DAry(i,j);
                 this.neighbor1DAry = this.sort(this.neighbor1DAry);
-                int average = this.arrWeight(this.neighbor1DAry);
+                int average = this.arrWeight(this.neighbor1DAry)/this.neighbor1DAry.length;
                 this.avgAry[i][j] = average;
                 if(this.newMin > this.avgAry[i][j]){
                     this.newMin = this.avgAry[i][j];
