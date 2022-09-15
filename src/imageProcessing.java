@@ -137,7 +137,7 @@ public class imageProcessing {
             for(int j=1; j<=this.numCols; j++){
                 this.loadNiehgbor1DAry(i,j);
                 this.neighbor1DAry = this.sort(this.neighbor1DAry);
-                int average = this.arrWeight(this.neighbor1DAry)/this.neighbor1DAry.length;
+                int average = this.arrSumm(this.neighbor1DAry)/this.neighbor1DAry.length;
                 this.avgAry[i][j] = average;
                 if(this.newMin > this.avgAry[i][j]){
                     this.newMin = this.avgAry[i][j];
@@ -196,11 +196,11 @@ public class imageProcessing {
         for(int i=0; i<9; i++){
             result+=neighbor1DAry[i]*mask1DAry[i];
         }
-        result = this.arrWeight(mask1DAry);
+        result = result / mask1DAry.length;
         return result;
     }
 
-    private int arrWeight(int[] arr){
+    private int arrSumm(int[] arr){
         int retVal=0;
         for(int z=0; z<this.neighbor1DAry.length; z++){
             retVal+=this.neighbor1DAry[z];
