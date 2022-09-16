@@ -196,14 +196,14 @@ public class imageProcessing {
         for(int i=0; i<9; i++){
             result+=neighbor1DAry[i]*mask1DAry[i];
         }
-        result = result / mask1DAry.length;
+        result = result / this.arrSumm(mask1DAry);
         return result;
     }
 
     private int arrSumm(int[] arr){
         int retVal=0;
-        for(int z=0; z<this.neighbor1DAry.length; z++){
-            retVal+=this.neighbor1DAry[z];
+        for(int z=0; z<arr.length; z++){
+            retVal+=arr[z];
         }
         return retVal;
     }
