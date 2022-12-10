@@ -1,2 +1,2 @@
-# CSCI381_Project2
-Gaussian Filter
+# Image Enhancement 
+This program uses averaging, median and Gaussian Filter
